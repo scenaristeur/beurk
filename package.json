@@ -1,21 +1,21 @@
 {
-  "name": "nodes",
+  "name": "beurk",
   "version": "1.0.0",
   "description": "librairie generique visjs / D3 / cytoscape &lt;-> rdf / ldp ... pour simplifier les outils de visualisation",
-  "main": "dist/index_bundle.js",
+  "main": "dist/beurk_bundle.js",
   "scripts": {
     "build": "webpack"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scenaristeur/nodes.git"
+    "url": "git+https://github.com/scenaristeur/beurk.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/scenaristeur/nodes/issues"
+    "url": "https://github.com/scenaristeur/beurk/issues"
   },
-  "homepage": "https://github.com/scenaristeur/nodes#readme",
+  "homepage": "https://github.com/scenaristeur/beurk#readme",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.10.4",
