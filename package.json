@@ -1,0 +1,27 @@
+{
+  "name": "nodes",
+  "version": "1.0.0",
+  "description": "librairie generique visjs / D3 / cytoscape &lt;-> rdf / ldp ... pour simplifier les outils de visualisation",
+  "main": "dist/index_bundle.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scenaristeur/nodes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scenaristeur/nodes/issues"
+  },
+  "homepage": "https://github.com/scenaristeur/nodes#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
