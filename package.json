@@ -4,7 +4,9 @@
   "description": "librairie generique visjs / D3 / cytoscape &lt;-> rdf / ldp ... pour simplifier les outils de visualisation",
   "main": "dist/beurk_bundle.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "git": "npm run build && git add . && git commit -m",
+    "postgit": "git push && git subtree push --prefix dist origin gh-pages"
   },
   "repository": {
     "type": "git",
