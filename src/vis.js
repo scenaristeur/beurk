@@ -1,7 +1,100 @@
-function vis(string) {
-  const capitalizedString =
-    string.substring(0, 1).toUpperCase() + string.substring(1)
-  return "klk"+capitalizedString+'boo'
+import snack from "./snack"
+
+import { v4 as uuidv4 } from 'uuid';
+
+function vis(data) {
+  snack("building network")
+  //  console.log(data)
+  let dataset = {nodes:[], edges: []}
+  data.objects.forEach((o) => {
+    //  console.log(o)
+    let n = {}
+    var node_exist = dataset.nodes.filter(noeud => {
+      return noeud.id === o.id
+    })
+    if (node_exist.length > 0){
+      n = node_exist[0]
+    }else{
+      n = {id:o.id, type:o.type}
+      dataset.nodes.push(n)
+    }
+
+
+    o.props.forEach((k) => {
+    //  console.log(k)
+      for (const [key, value] of Object.entries(k)) {
+        //  console.log("###", typeof value, key, value)
+        switch (typeof value) {
+          case 'string':
+          dataset = add(n, key, value, dataset)
+          break;
+          case 'object':
+        //  console.log("value",value)
+          if ( Array.isArray(value) ==  true){
+            value.forEach((v) => {
+              dataset = add(n, key, v, dataset)
+            });
+          }else{
+            console.error("TODO, object",value)
+          }
+
+          break;
+          default:
+          console.warn('todo',typeof value, value);
+        }
+      }
+    });
+  });
+  return dataset
+}
+
+function add(n, k, v, dataset){
+  //  console.error("ADD",n,k,v)
+  let node = {}
+  var node_exist = dataset.nodes.filter(noeud => {
+    return noeud.id === v || noeud.label == v
+  })
+  if (node_exist.length > 0){
+    node = node_exist[0]
+    //  console.log("found",node)
+  }else{
+
+    let id = v.startsWith('http') ==  true ? v : uuidv4();
+    //  console.warn("TODO : must add ", id, v)
+
+
+    node  = {id:id}
+
+    if(v.length > 30){
+      node.label = v.substring(0,30)
+      node.title = v
+    }else{
+      node.label = v
+    }
+
+
+    dataset.nodes.push(node)
+
+  }
+
+  switch (k) {
+    case 'pair:label':
+    case 'rdfs:label':
+    case 'foaf:name':
+  //  console.warn('todo',k,v);
+    n.label = v
+    break;
+    default:
+  //  console.log(k)
+    let edge = {from: n.id, to: node.id, label: k, arrows: "to"}
+    var edge_exist = dataset.edges.filter(e => {
+      return e.from === edge.from && e.to === edge.to && e.label === edge.label
+    })
+    if (edge_exist.length == 0){
+      dataset.edges.push(edge)
+    }
+  }
+  return dataset
 }
 
 export default vis
