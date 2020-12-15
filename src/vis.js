@@ -66,7 +66,7 @@ function add(n, k, v, dataset){
     node  = {id:id}
 
     if(v.length > 30){
-      node.label = v.substring(0,30)
+      node.label = v.substring(0,30)+'...'
       node.title = v
     }else{
       node.label = v
