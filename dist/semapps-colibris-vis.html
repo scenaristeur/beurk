@@ -225,9 +225,13 @@ div.outerBorder {
             console.log("RESULT",result)
             let dataset = beurk.vis(result)
             console.log(dataset)
+            const dataset_options = {
+              //fieldId: "@id",
+              queue: {max: 100}
+            };
 
-            nodes = new vis.DataSet(dataset.nodes)
-            edges = new vis.DataSet(dataset.edges)
+            nodes = new vis.DataSet(dataset.nodes, dataset_options)
+            edges = new vis.DataSet(dataset.edges, dataset_options)
             // create an array with nodes
             // var nodes = new vis.DataSet([
             //   { id: 1, label: "Node 1" },

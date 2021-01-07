@@ -40,29 +40,30 @@ async function ldp(source){
     await fetch(url, fetch_init)
     .then(response => response.json())
     .then(data => {
-      //console.log("data",data)
+      console.log("data",data)
       let items = data['ldp:contains']
-      for (const item of items){
-        //console.log(item)
-        let i = {props:[]}
-        for (const [key, value] of Object.entries(item)) {
-          //console.log(`${key}: ${value}`);
-          switch (key) {
-            case '@id':
-            i.id = value
-            break;
-            case '@type':
-            i.type = value
-            break;
-            default:
-            let e = {}
-            e[key] = value
-            //console.log(e)
-            i.props.push(e)
-          }
-        }
-        result.objects.push(i)
-      }
+      // for (const item of items){
+      //   //console.log(item)
+      //   let i = {props:[]}
+      //   for (const [key, value] of Object.entries(item)) {
+      //     //console.log(`${key}: ${value}`);
+      //     switch (key) {
+      //       case '@id':
+      //       i.id = value
+      //       break;
+      //       case '@type':
+      //       i.type = value
+      //       break;
+      //       default:
+      //       let e = {}
+      //       e[key] = value
+      //       //console.log(e)
+      //       i.props.push(e)
+      //     }
+      //   }
+      //   result.objects.push(i)
+      // }
+      result.objects = items
     });
   }
 
