@@ -31,7 +31,7 @@ function vis(data) {
           }
           dataset.nodes.push(n)
         }else{
-          console.log('todo', typeof node/*, node*/)
+          console.log('todo', typeof node /*, node*/)
         }
       }
       let edge = {from:o.id, to: n.id, arrows: "to", label: prop}
