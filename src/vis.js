@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 function vis(data) {
   snack("building network")
-  //  console.log(data)
+  console.log(data)
   let dataset = {nodes:[], edges: []}
   data.objects.forEach((o) => {
-    //  console.log(o)
+    console.log(o)
     let n = {}
     var node_exist = dataset.nodes.filter(noeud => {
       return noeud.id === o.id
@@ -21,21 +21,22 @@ function vis(data) {
 
 
     o.props.forEach((k) => {
-    //  console.log(k)
+      console.log("##PROP",k)
       for (const [key, value] of Object.entries(k)) {
-        //  console.log("###", typeof value, key, value)
+        console.log("###", typeof value, key, value)
         switch (typeof value) {
           case 'string':
           dataset = add(n, key, value, dataset)
           break;
           case 'object':
-        //  console.log("value",value)
+          console.log("value",value)
           if ( Array.isArray(value) ==  true){
             value.forEach((v) => {
               dataset = add(n, key, v, dataset)
             });
           }else{
-            console.error("TODO, object",value)
+            //  console.error("TODO, object",value)
+            dataset = add(n, key, value, dataset)
           }
 
           break;
@@ -49,21 +50,24 @@ function vis(data) {
 }
 
 function add(n, k, v, dataset){
-  //  console.error("ADD",n,k,v)
+  console.log("ADD",n,k,v)
   let node = {}
+    node  = {id: uuidv4()}
   var node_exist = dataset.nodes.filter(noeud => {
     return noeud.id === v || noeud.label == v
   })
   if (node_exist.length > 0){
     node = node_exist[0]
-    //  console.log("found",node)
+    console.log("found",node)
   }else{
-
-    let id = v.startsWith('http') ==  true ? v : uuidv4();
-    //  console.warn("TODO : must add ", id, v)
-
-
-    node  = {id:id}
+    console.log('not found',v)
+    if (typeof v == "string"){
+      console.log(v)
+      let id = v.startsWith('http') ==  true ? v : uuidv4();
+    }else{
+    //  console.warn("TODO : must add ", v)
+    //  let id = uuidv4()
+    }
 
     if(v.length > 30){
       node.label = v.substring(0,30)+'...'
@@ -71,7 +75,6 @@ function add(n, k, v, dataset){
     }else{
       node.label = v
     }
-
 
     dataset.nodes.push(node)
 
@@ -81,11 +84,11 @@ function add(n, k, v, dataset){
     case 'pair:label':
     case 'rdfs:label':
     case 'foaf:name':
-  //  console.warn('todo',k,v);
+    //  console.warn('todo',k,v);
     n.label = v
     break;
     default:
-  //  console.log(k)
+    console.log(k)
     let edge = {from: n.id, to: node.id, label: k, arrows: "to"}
     var edge_exist = dataset.edges.filter(e => {
       return e.from === edge.from && e.to === edge.to && e.label === edge.label
