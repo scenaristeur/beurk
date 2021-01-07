@@ -1,0 +1,319 @@
+<!-- https://github.com/dalisc/fetch-api-tutorial -->
+<!-- https://www.freecodecamp.org/news/a-practical-es6-guide-on-how-to-perform-http-requests-using-the-fetch-api-594c3d91a547/ -->
+<html>
+
+<head>
+
+</head>
+<script>
+  let server = "http://localhost:3000/"
+
+</script>
+
+<body>
+
+  <h1>PUT: Creating resources for a given URL</h1>
+  <h2>Create a plain text file:</h2>
+  <div>same as : curl -X PUT -H "Content-Type: text/plain" -d "abc" http://localhost:3000/myfile.txt</div>
+  <textarea id="content" rows="5" cols="33">abc</textarea> <br>
+  <input id="filename" placeholder="filename with .txt" value="file/myfile.txt"/><br>
+  <button onclick="createFile()">createFile</button>
+
+  <script>
+    function createFile(){
+      let content = document.getElementById('content').value
+      let filename = document.getElementById('filename').value
+      console.log(content, filename)
+      fetch(server+filename, {
+        headers: {"Content-type": "text/plain; charset=UTF-8"},
+        method: 'PUT',
+        body: content
+      })
+      .then(response => console.log(response))
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+  </script>
+
+  <!---------------------------------------------------------------------->
+
+  <h2>Create a turtle file:</h2>
+  <div> same as : curl -X PUT -H "Content-Type: text/turtle" -d "<ex:s> <ex:p> <ex:o>." http://localhost:3000/myfile.ttl</div>
+
+
+  <textarea id="ttl_content" rows="5" cols="33"><ex:s> <ex:p> <ex:o>.</textarea> <br>
+  <input id="ttl_filename" placeholder="filename with .ttl" value="file/myfile.ttl"/><br>
+  <button onclick="createTTLFile()">createFile</button>
+
+  <script>
+    function createTTLFile(){
+      let ttl_content = document.getElementById('ttl_content').value
+      let ttl_filename = document.getElementById('ttl_filename').value
+      console.log(ttl_content, ttl_filename)
+      fetch(server+ttl_filename, {
+        headers: {"Content-type": "text/turtle; charset=UTF-8"},
+        method: 'PUT',
+        body: ttl_content
+      })
+      .then(response => console.log(response))
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+  </script>
+
+
+  <h2>Create a html file:</h2>
+  <div> same as : curl -X PUT -H "Content-Type: text/html" -d "<pre><h1>Hello</h1> world</pre>" http://localhost:3000/myfile.html</div>
+
+
+  <textarea id="html_content" rows="5" cols="33"><h1>Hello</h1> world</textarea> <br>
+  <input id="html_filename" placeholder="filename with .html" value="file/myfile.html"/><br>
+  <button onclick="createHTMLFile()">create html File</button>
+
+  <script>
+    function createHTMLFile(){
+      let html_content = document.getElementById('html_content').value
+      let html_filename = document.getElementById('html_filename').value
+      console.log(html_content, html_filename)
+      fetch(server+html_filename, {
+        headers: {"Content-type": "text/html; charset=UTF-8"},
+        method: 'PUT',
+        body: html_content
+      })
+      .then(response => console.log(response))
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+  </script>
+  <!---------------------------------------------------------------------->
+
+
+  <h2>Insert sparql data:</h2>
+
+  <textarea id="sparql_content" rows="5" cols="33">
+    PREFIX : <https://ruben.verborgh.org/profile/#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+    :me a foaf:Person;
+        foaf:name  "Ruben Verborgh"@en;
+        foaf:homepage <https://ruben.verborgh.org/>.
+  </textarea> <br>
+  <input id="sparql_path" placeholder="path" value="person"/><br> -->
+  <button onclick="insertSparql()">Insert sparql</button>
+
+  <script>
+    function insertSparql(){
+      //https://github.com/solid/community-server/blob/fix/build-instructions-and-watch/test/integration/SparqlStorage.test.ts
+      let sparql_content = document.getElementById('sparql_content').value
+      let sparql_path = document.getElementById('sparql_path').value
+      console.log(sparql_content)
+      fetch(server+'sparql/'+sparql_path+'/', {
+        headers: {"Content-type": "text/turtle; charset=UTF-8"},
+        method: 'POST',
+        body: sparql_content
+      })
+      .then(response => {
+        console.log(response)
+        // const id = response._getHeaders().location;
+        // console.log(id)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+  </script>
+
+
+
+
+
+
+  <!---------------------------------------------------------------------->
+
+  <h1>POST: Creating resources at a generated URL</h1>
+
+  <h2>Create a plain text file:</h2>
+  <div> same as : curl -X POST -H "Content-Type: text/plain" -d "abc" http://localhost:3000/ </div>
+
+  <textarea id="content_gen" rows="5" cols="33">abc</textarea> <br>
+  <button onclick="createFile_gen()">Create file at generated url</button>
+
+  <script>
+    function createFile_gen(){
+      let content_gen = document.getElementById('content_gen').value
+      console.log(content_gen)
+      fetch(server+'file/', {
+        headers: {"Content-type": "text/plain; charset=UTF-8", "Access-Control-Expose-Headers": "Location"},
+        method: 'POST',
+        body: content_gen
+      })
+      .then(response => {
+        console.log(response)
+        let keys = response.headers.keys()
+        for(let value of keys){
+          console.log(value)
+        }
+        console.log('location should be here : ',response.headers.get('location'))
+      })
+
+      //.then(json => console.log(json))
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+  </script>
+
+  <!---------------------------------------------------------------------->
+
+
+  <h2>Create a turtle file:</h2>
+  <div> same as : curl -X POST -H "Content-Type: text/turtle" -d "<ex:s> <ex:p> <ex:o>." http://localhost:3000/</div>
+  TODO , quit similare to the precedent
+
+  <!---------------------------------------------------------------------->
+
+
+
+  <h1>GET: Retrieving resources</h1>
+
+
+  <h2>Get a list of resource</h2>
+
+
+  <button onclick="getResources()">Get All Resources</button>
+
+  <ul id="list"></ul>
+
+
+
+  <script>
+    function getResources(){
+      document.getElementById("list").innerHTML = ""
+      fetch(server)
+      .then(response => response.json())
+      .then(json => {
+        console.log(json)
+        let resources = json[0]['http://www.w3.org/ns/ldp#contains']
+        console.log(resources)
+        resources.forEach((item, i) => {
+          addToList(item)
+        });
+
+
+
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    function addToList(item) {
+      var ul = document.getElementById("list");
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode(item['@id']));
+      li.setAttribute("id", item['@id']); // added line
+      ul.appendChild(li);
+    //  alert(li.id);
+    }
+
+  </script>
+
+
+  <!---------------------------------------------------------------------->
+
+
+  <hr>
+  <h2>Retrieve a plain text file:</h2>
+
+  curl -H "Accept: text/plain" \
+  http://localhost:3000/myfile.txt
+
+  Retrieve a turtle file:
+
+  curl -H "Accept: text/turtle" \
+  http://localhost:3000/myfile.ttl
+
+  Retrieve a turtle file in a different serialization:
+
+  curl -H "Accept: application/ld+json" \
+  http://localhost:3000/myfile.ttl
+
+  DELETE: Deleting resources
+
+  curl -X DELETE http://localhost:3000/myfile.txt
+
+  PATCH: Modifying resources
+
+  Currently, only patches over RDF resources are supported using SPARQL Update queries without WHERE clause.
+
+  curl -X PATCH -H "Content-Type: application/sparql-update" \
+  -d "INSERT DATA { <ex:s2> <ex:p2> <ex:o2> }" \
+  http://localhost:3000/myfile.ttl
+
+  HEAD: Retrieve resources headers
+
+  curl -I -H "Accept: text/plain" \
+  http://localhost:3000/myfile.txt
+
+  OPTIONS: Retrieve resources communication options
+
+  curl -X OPTIONS -i http://localhost:3000/myfile.txt
+
+
+  <h1> creating a new user</h1>
+
+
+  <input id="username" placeholder="username" /><br>
+  <input id="email" placeholder="email" /><br>
+  <button onclick="addUser()">Add user</button>
+
+
+  <script>
+    function addUser(){
+      let username = document.getElementById('username').value
+      let email = document.getElementById('email').value
+      console.log(username, email)
+      // Create a new user
+      fetch(server+'users', {
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        method: 'POST',
+        body: JSON.stringify({
+          username: username,
+          email: email,
+        })
+      })
+    }
+  </script>
+
+
+
+
+  Create a turtle file:
+
+  curl -X PUT -H "Content-Type: text/turtle" -d "<ex:s> <ex:p> <ex:o>." http://localhost:3000/myfile.ttl
+
+
+</body>
+
+
+</html>
+
+
+
+
+<!--
+
+
+
+
+The response's Location header will contain the URL of the created resource.
+
+-->
